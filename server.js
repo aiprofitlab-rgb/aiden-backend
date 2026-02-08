@@ -1,16 +1,13 @@
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 
 const chatRoute = require("./routes/chat");
-app.use("/chat", chatRoutes);
-
 
 const app = express();
 
 // middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json()); // bodyParser is no longer needed
 
 // health check
 app.get("/", (req, res) => {
