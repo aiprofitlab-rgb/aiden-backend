@@ -1,30 +1,49 @@
 const express = require("express");
 const router = express.Router();
-const getOpenAI = require("../config/openai");
-const systemPrompt = require("../prompts/aidenSystem");
 
+const getOpenAI = require("../config/openai");
+const systemPrompt = require("../prompts/systemPrompt");
+
+// POST /chat
 router.post("/", async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, sessionId } = req.body;
 
     if (!message) {
-      return res.status(400).json({ error: "Message is required" });
+      return res.status(400).json({
+        error: "Message is required",
+      });
     }
 
-    const response = await openai.chat.completions.create({
+    const openai = getOpenAI();
+
+    const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: message },
+        {
+          role: "system",
+          content: systemPrompt,
+        },
+        {
+          role: "user",
+          content: message,
+        },
       ],
+      temperature: 0.7,
     });
 
+    const reply = completion.choices[0].message.content;
+
     res.json({
-      reply: response.choices[0].message.content,
+      reply,
+      sessionId: sessionId || null,
     });
   } catch (error) {
-    console.error("Chat error:", error);
-    res.status(500).json({ error: "Aiden is tired 😴" });
+    console.error("Aiden chat error:", error.message);
+
+    res.status(500).json({
+      error: "Aiden is thinking too hard right now 🤯 Please try again.",
+    });
   }
 });
 
