@@ -1,11 +1,17 @@
 const OpenAI = require("openai");
 
-if (!process.env.OPENAI_API_KEY) {
-  throw new Error("OPENAI_API_KEY is missing. Check Railway Variables.");
+let client = null;
+
+function getOpenAI() {
+  if (!client) {
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error("OPENAI_API_KEY is missing");
+    }
+    client = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+  }
+  return client;
 }
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-module.exports = client;
+module.exports = getOpenAI;
