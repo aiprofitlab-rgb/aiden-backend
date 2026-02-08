@@ -3,6 +3,8 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const chatRoute = require("./routes/chat");
+app.use("/chat", chatRoutes);
+
 
 const app = express();
 
