@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const openai = require("../config/openai");
+const getOpenAI = require("../config/openai");
 const systemPrompt = require("../prompts/aidenSystem");
 
 router.post("/", async (req, res) => {
