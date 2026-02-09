@@ -5,8 +5,15 @@ const chatRoute = require("./routes/chat");
 
 const app = express();
 
+import auditRoute from "./routes/audit.js";
+
+
 // middleware
 app.use(cors());
+app.use("/audit", auditRoute);
+
+
+
 app.use(express.json()); // bodyParser is no longer needed
 
 // health check
