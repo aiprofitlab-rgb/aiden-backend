@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const strategyCallRoute = require("./routes/strategyCall");
+
 
 const chatRoute = require("./routes/chat");
 
@@ -14,6 +16,7 @@ app.use("/audit", auditRoute);
 
 
 
+
 app.use(express.json()); // bodyParser is no longer needed
 
 // health check
@@ -23,6 +26,8 @@ app.get("/", (req, res) => {
 
 // Aiden chat endpoint
 app.use("/chat", chatRoute);
+app.use("/api/strategy-call", strategyCallRoute);
+
 
 // Railway port
 const PORT = process.env.PORT || 8080;
