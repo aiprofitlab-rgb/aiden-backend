@@ -5,7 +5,7 @@ const chatRoute = require("./routes/chat");
 
 const app = express();
 
-import auditRoute from "./routes/audit.js";
+const auditRoute = require("./routes/audit");
 
 
 // middleware
