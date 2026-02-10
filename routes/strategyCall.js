@@ -1,5 +1,9 @@
+
 const express = require("express");
 const router = express.Router();
+
+console.log("ENV CHECK → RESEND_API_KEY =", process.env.RESEND_API_KEY);
+
 const { Resend } = require("resend");
 const axios = require("axios");
 
