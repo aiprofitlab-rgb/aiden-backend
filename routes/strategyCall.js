@@ -4,6 +4,12 @@ const router = express.Router();
 
 console.log("ENV CHECK → RESEND_API_KEY =", process.env.RESEND_API_KEY);
 
+const twilio = require("twilio");
+
+const client = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 const { Resend } = require("resend");
 const axios = require("axios");
 
@@ -37,11 +43,11 @@ Email: ${email}
 Source: ${source || "Website"}
     `;
 
-    await axios.get(
-      `https://api.callmebot.com/whatsapp.php?phone=${process.env.WHATSAPP_NUMBER}&text=${encodeURIComponent(
-        whatsappText
-      )}&apikey=${process.env.CALLMEBOT_API_KEY}`
-    );
+    await client.messages.create({
+  from: process.env.TWILIO_WHATSAPP_FROM,
+  to: process.env.WHATSAPP_TO,
+  body: `📞 New Strategy Call\n\nName: ${name}\nEmail: ${email}`
+});
 
     res.json({ success: true });
   } catch (error) {
