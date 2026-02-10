@@ -46,8 +46,13 @@ Source: ${source || "Website"}
     await client.messages.create({
   from: process.env.TWILIO_WHATSAPP_FROM,
   to: process.env.WHATSAPP_TO,
-  body: `📞 New Strategy Call\n\nName: ${name}\nEmail: ${email}`
+  body: `📞 New Strategy Call
+
+Name: ${name}
+Email: ${email}
+Source: ${source || "Website"}`
 });
+
 
     res.json({ success: true });
   } catch (error) {
