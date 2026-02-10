@@ -41,9 +41,13 @@ Source: ${source || "Website"}
 
     res.json({ success: true });
   } catch (error) {
-    console.error("Strategy Call Error:", error);
-    res.status(500).json({ error: "Something went wrong" });
-  }
+  console.error("STRATEGY CALL ERROR:", error);
+  res.status(500).json({
+    error: error.message || "Unknown error",
+    details: error.response?.data || null
+  });
+}
+
 });
 
 module.exports = router;
