@@ -25,7 +25,8 @@ router.post("/", async (req, res) => {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     await resend.emails.send({
-      from: "Aiden <onboarding@resend.dev>",
+  from: "AI Profit Lab <hello@aiprofitlab.io>",
+
       to: [email, process.env.ADMIN_EMAIL],
       subject: "Your Free Strategy Call",
       html: `
@@ -36,24 +37,17 @@ router.post("/", async (req, res) => {
     });
 
     // 2️⃣ Send WhatsApp notification
-    const whatsappText = `
-🔥 New Strategy Call Lead
-Name: ${name}
-Email: ${email}
-Source: ${source || "Website"}
-    `;
-
-    Try { 
-      await client.messages.create({
-  from: process.env.TWILIO_WHATSAPP_FROM,
-  to: process.env.WHATSAPP_TO,
-  body: `📞 New Strategy Call
+try {
+  await client.messages.create({
+    from: process.env.TWILIO_WHATSAPP_FROM,
+    to: process.env.WHATSAPP_TO,
+    body: `📞 New Strategy Call
 
 Name: ${name}
 Email: ${email}
 Source: ${source || "Website"}`
-});
-}   catch (waError) {
+  });
+} catch (waError) {
   console.error("WhatsApp failed:", waError.message);
 }
 
