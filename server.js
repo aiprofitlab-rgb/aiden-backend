@@ -1,7 +1,10 @@
 const express = require("express");
 const cors = require("cors");
-const strategyCallRoute = require("./routes/strategyCall");
 
+const auditRoute = require("./routes/audit");
+const chatRoute = require("./routes/chat");
+const strategyCallRoute = require("./routes/strategyCall");
+const contactRoute = require("./routes/contact");
 
 const chatRoute = require("./routes/chat");
 
@@ -13,6 +16,10 @@ const auditRoute = require("./routes/audit");
 // middleware
 app.use(cors());
 app.use("/audit", auditRoute);
+
+app.use("/chat", chatRoute);
+app.use("/strategy-call", strategyCallRoute);
+app.use("/contact", contactRoute);
 
 
 
