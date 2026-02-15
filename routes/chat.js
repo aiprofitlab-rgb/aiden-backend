@@ -16,7 +16,8 @@ router.post("/", async (req, res) => {
       industry,
       visitorType,
       country,
-      language
+      language,
+      page
     } = req.body;
 
     if (!message) {
@@ -38,26 +39,28 @@ router.post("/", async (req, res) => {
 
     const reply = completion.choices[0].message.content;
 
-    // ✅ Save to CRM if email exists
-    if (email) {
-      await addRow("Aiden_Chat", [
-        new Date().toISOString(),
-        sessionId || "",
-        "Website",
-        language || "",
-        country || "",
-        visitorType || "",
-        industry || "",
-        email,
-        phone || "",
-        message,
-        reply
-      ]);
-    }
+    // ✅ ALWAYS save to CRM - removed email condition
+    // Create a default email if none provided
+    const chatEmail = email || `chat_${sessionId || Date.now()}@temp.local`;
+    
+    await addRow("Aiden_Chat", [
+      new Date().toISOString(),
+      sessionId || "unknown",
+      page || "Website",
+      language || "unknown",
+      country || "unknown",
+      visitorType || "website_visitor",
+      industry || "unknown",
+      chatEmail,
+      phone || "",
+      message,
+      reply
+    ]);
 
     res.json({
       reply,
       sessionId: sessionId || null,
+      success: true
     });
 
   } catch (error) {
@@ -65,6 +68,7 @@ router.post("/", async (req, res) => {
 
     res.status(500).json({
       error: "Aiden is thinking too hard right now 🤯 Please try again.",
+      success: false
     });
   }
 });
